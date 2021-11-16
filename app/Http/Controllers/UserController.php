@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Services\UserService;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Sach;
 
 class UserController extends Controller
 {
@@ -21,7 +24,16 @@ class UserController extends Controller
     public function index(){
         // echo '<br> Controller call service search() '.__METHOD__;
         // $this->userService->search();
-       
+
+        $books = Sach::all();
+
+        // $book = Sach::find(1);
+        // $book->delete();
+
+        dd($books->toArray());
+
+        // $books = DB::table('books')->pluck('name','id');
+        // dd($books);
 
 
         $numbers = [1,2,3,4,5,6,7,8,9,10];
