@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\User;
 use App\Models\Sach;
 
 class UserController extends Controller
@@ -24,6 +25,10 @@ class UserController extends Controller
     public function index(){
         // echo '<br> Controller call service search() '.__METHOD__;
         // $this->userService->search();
+
+        $user = User::find(1)->phone->phone;
+        dd($user);
+
 
         $books = Sach::all();
 
