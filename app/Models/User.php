@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 use App\Models\Phone;
+use App\Models\Country;
+use App\Models\Role;
 
 class User extends Authenticatable
 {
@@ -46,5 +48,13 @@ class User extends Authenticatable
 
     public function phone(){
         return $this->hasOne(Phone::class,'user_id','id');
+    }
+
+    public function country(){
+        return $this->belongsTo(Country::class,'country_id','id');
+    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class,'role_user','user_id','role_id');
     }
 }

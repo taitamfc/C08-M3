@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Phone;
 use App\Models\Sach;
+use App\Models\Country;
 
 class UserController extends Controller
 {
@@ -30,8 +31,30 @@ class UserController extends Controller
         // $user = User::find(1)->phone->phone;
         // dd($user);
 
-        $phone = Phone::find(1)->user->name;
-        dd($phone);
+        // $phone = Phone::find(1)->user->name;
+        // dd($phone);
+
+        // $users = Country::find(1)->users->toArray();
+        // dd($users);
+
+        // $user = User::find(1)->country->name;
+        // dd($user);
+
+        // $roles = User::find(2)->roles->toArray();
+        // dd($roles);
+
+        $users = User::all();
+        foreach ($users as $user) {
+            // echo '<pre>';
+            // print_r($user->roles->toArray());
+            // echo '</pre>';
+            // echo '<hr>';
+        }
+
+        $postsCountry = Country::find(1)->posts->toArray();
+        dd($postsCountry);
+
+
 
 
         $books = Sach::all();
@@ -39,7 +62,7 @@ class UserController extends Controller
         // $book = Sach::find(1);
         // $book->delete();
 
-        dd($books->toArray());
+        //dd($books->toArray());
 
         // $books = DB::table('books')->pluck('name','id');
         // dd($books);
