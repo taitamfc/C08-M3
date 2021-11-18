@@ -8,6 +8,7 @@ use App\Services\UserService;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
+use App\Models\Phone;
 use App\Models\Sach;
 
 class UserController extends Controller
@@ -26,8 +27,11 @@ class UserController extends Controller
         // echo '<br> Controller call service search() '.__METHOD__;
         // $this->userService->search();
 
-        $user = User::find(1)->phone->phone;
-        dd($user);
+        // $user = User::find(1)->phone->phone;
+        // dd($user);
+
+        $phone = Phone::find(1)->user->name;
+        dd($phone);
 
 
         $books = Sach::all();
