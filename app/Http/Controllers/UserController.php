@@ -12,6 +12,16 @@ use App\Models\Phone;
 use App\Models\Sach;
 use App\Models\Country;
 
+use Illuminate\Support\Facades\Validator;
+
+use App\Http\Requests\FormExampleRequest;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use Exception;
+
+use Illuminate\Support\Facades\Log;
+
 class UserController extends Controller
 {
     public function __construct(UserService $userService)
@@ -93,9 +103,58 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store1(Request $request)
     {
-        //
+        $messages = [
+            'username.required' => 'Truong username la bat buoc',
+            'email.required'    => 'Truong email la bat buoc',
+            'email.email'       => 'Vui long nhap dung email',
+            'email.unique'      => 'Email da ton tai',
+        ];
+
+        $roles = [
+            'username'      => 'required',
+            'email'         => 'required|email|unique:users',
+        ];
+
+        $this->validate($request, $roles , $messages);
+
+        echo 123;
+        die();
+    }
+
+    public function store2(Request $request)
+    {
+        $messages = [
+            'username.required' => 'Truong username la bat buoc',
+            'username.min'      => 'Vui long nhap it nhat 8 ky tu',
+            'email.required'    => 'Truong email la bat buoc',
+            'email.email'       => 'Vui long nhap dung email',
+            'email.unique'      => 'Email da ton tai',
+        ];
+
+        $roles = [
+            'username'      => 'required|min:8',
+            'email'         => 'required|email|unique:users',
+        ];
+
+        $validator = Validator::make($request->all(),$roles,$messages);
+
+        if ($validator->fails()) {
+            // return redirect('post/create')
+            //             ->withErrors($validator)
+            //             ->withInput();
+
+            return back()->withErrors($validator)->withInput();
+        }
+
+        echo 123;
+        die();
+    }
+
+    public function store(FormExampleRequest $request)
+    {
+
     }
 
     /**
@@ -105,8 +164,19 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        
+        Log::info('Someone view this user: '.$id);
+
+        try{
+            $user = User::findOrFail($id);
+     
+            
+        }catch( ModelNotFoundException $exception ){
+            dd('User not found');
+        }
+        
+        
     }
 
     /**
