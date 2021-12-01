@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +15,43 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+	$locale = session('cr_lang');
+
+	// var_dump($locale);
+	// die();
+
+	App::setLocale($locale);
+
+	
     return view('welcome');//resources/views/welcome.blade.php
 });
 
-Route::get('link-vip/{age}',[App\Http\Controllers\UserController::class,'link_vip'])->middleware('checkage');
+Route::get('/changeLang/{lang}', function ($locale) {
+	/*
+	vi
+	en
+	*/
+	session(['cr_lang' => $locale]);
 
-Route::resource('users',App\Http\Controllers\UserController::class);
+	return redirect('/');
+});
+
+Route::get('link-vip/{age}',[UserController::class,'link_vip'])->middleware('checkage');
+
+Route::resource('users',UserController::class);
+
+Route::get('test-session',[UserController::class,'testSession']);
+
+
+//demo
+
+Route::get('admin',[UserController::class,'admin'])->name('users.admin')->middleware('auth');
+
+//=> login
+//Route::get('login',[UserController::class,'login'])->name('login');
+Route::get('logout',[UserController::class,'logout'])->name('logout');
+
+Route::post('postLogin',[UserController::class,'postLogin'])->name('users.postLogin');;
+
+//Route::get('register',[UserController::class,'register'])->name('users.register');;
+Route::post('postRegister',[UserController::class,'postRegister'])->name('users.postRegister');;

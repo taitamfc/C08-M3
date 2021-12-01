@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\View\Composers\ProfileComposer;
 
+use Illuminate\Support\Facades\Gate;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -31,8 +33,29 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
+    public function registerPolicies(){
+
+    }
+
     public function boot()
     {
+        $this->registerPolicies();
+
+        Gate::define('xem-trang-vietnam', function ($user) {
+          if ($user->country_id == 1) {
+              return true;
+          }
+          return false;
+        });
+
+        Gate::define('xem-trang-us', function ($user) {
+          if ($user->country_id == 2) {
+              return true;
+          }
+          return false;
+        });
+
         View::share('user_name','Nguyen Van A');
 
         View::composer(

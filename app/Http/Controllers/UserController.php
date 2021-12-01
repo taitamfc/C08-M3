@@ -21,6 +21,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -218,5 +220,45 @@ class UserController extends Controller
         echo __METHOD__;
 
 
+    }
+
+    public function login(){
+        return view('users.login');
+    }
+    public function postLogin(Request $request){
+        
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password,
+        ];
+        if (Auth::attempt($credentials)) {
+            return redirect()->route('users.admin');
+        }
+    }
+    public function register(){
+        return view('users.register');
+    }
+    public function logout(){
+        Auth::logout();
+        return redirect()->route('login');
+    }
+    public function postRegister(Request $request){
+        $user = new User();
+        $user->name     = 'Test';
+        $user->email    = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->country_id = 1;
+        $user->save();
+    }
+    public function admin(){
+        $user = Auth::user();
+        if( $this->userCan('xem-trang-vietnam') ){
+            echo 'User Viet Nam';
+        }
+        if( $this->userCan('xem-trang-us') ){
+            echo 'User Us';
+        }
+        echo '<br>';
+        echo 'Wellcome to admin '.$user->email;
     }
 }
